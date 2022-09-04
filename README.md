@@ -47,6 +47,21 @@ vim ~/.zshrc
     alias cls="clear"
 ```
 
+zsh variables set
+
+```
+vim ~/.zshrc
+	export PATH=$PATH:/home/{user-name}/.python/bin
+	
+source ~/.zshrc
+```
+
+install zsh as default commandline
+
+```
+~ chsh -s $(which zsh)
+```
+
 ## Install python 3.7
 
 mkdir ~/code
@@ -61,12 +76,20 @@ mkdir ~/.python ; \
 ./configure --enable-optimizations --prefix=/home/www/.python ; \
 make -j8 ; \
 sudo make altinstall
+
+sudo rm -rf Python-3.7.tgz Python-3.7
+./.python/bin/python3.7
 ```
 
 Now python3.7 in `/home/www/.python/bin/python3.7`. Update pip:
 
 ```
 sudo /home/www/.python/bin/python3.7 -m pip install -U pip
+
+vim ~/.zshrc
+	export VIRTUALENVWRAPPER_PYTHON="/home/{user-name}/.python/bin/python3.7"
+	alias python3.7="/home/{user-name}/.python/bin/python3.7"
+.~/.zshrc
 ```
 
 create and activate Python virtual environment:
@@ -174,31 +197,33 @@ vim project/supervisor.salesbeat.conf
 	autostart=true
 	autorestart=true
 	redirect_stderr=true
+	
+sudo service supervisor start
+sudo vim /var/log/supervisor/supervisor.log
 ```
 
 `Gunicorn` config:
-`pip install gunicorn`
-gunicorn_config.py
+
 ```
-command = '/home/www/code/project/env/bin/gunicorn'
-pythonpath = '/home/www/code/project/project'
-bind = '127.0.0.1:8001'
-workers = 3
-user = 'www'
-limit_request_fields = 32000
-limit_request_field_size = 0
-raw_env = 'DJANGO_SETTINGS_MODULE=project.settings'
-```
-go to project folder
-`mkdir bin`
-edit bin/start_gunicorn.sh
-```
-#!/bin/bash
-source /home/<user>/<project_dir>/env/bin/activate
-exec gunicorn -c "/home/<user>/<project_dir>/gunicorn_config.py" <project_config>.wsgi
-```
-make file executable & run:
-```
+pip install gunicorn
+
+vim gunicorn_config.py
+	command = '/home/www/code/project/env/bin/gunicorn'
+	pythonpath = '/home/www/code/project/project'
+	bind = '127.0.0.1:8001'
+	workers = 3
+	user = 'www'
+	limit_request_fields = 32000
+	limit_request_field_size = 0
+	raw_env = 'DJANGO_SETTINGS_MODULE=project.settings'
+
+mkdir bin
+
+vim bin/start_gunicorn.sh
+	#!/bin/bash
+	source /home/<user>/<project_dir>/env/bin/activate
+	exec gunicorn -c "/home/<user>/<project_dir>/gunicorn_config.py" <project_config>.wsgi
+	
 chmod +x bin/start_gunicorn.sh
 . ./bin/start_gunicorn.sh
 ```
@@ -296,3 +321,38 @@ Restart Apache:
 ```
 sudo service apache2 restart
 ```
+
+## NeoVim
+
+Brew installation:
+
+```
+sudo apt-get install procps file
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+brew doctor
+brew list
+brew update
+```
+
+Install NeoVim with brew:
+
+```
+brew install --HEAD tree-sitter luajit neovim
+which nvim
+ln -s (which nvim) /usr/local/bin/vim
+which vim
+```
+
+nvim plugins:
+
+```
+cd ~/.local/share/nvim
+sh -c 'curl -fLo $HOME/.local/share/nvim/site/autoload/plug.vim --create-dirs \
+	https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+
+mkdir ~/.config/nvim && cd ~/.config/nvim && vim init.vim
+	:PlugInstall
+```
+
+NeoSolarized.vim
+`https://github.com/overcache/NeoSolarized`
