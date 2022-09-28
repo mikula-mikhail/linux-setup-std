@@ -375,5 +375,9 @@ Put [init.vim](init.vim) to `~/.config/nvim/init.vim` folder
 ## Alacritty
 ```
 nvim ./config/alacritty/alacritty.yml
+```
 
+## ripgrep
+```
+sudo apt install ripgrep
 ```
