@@ -381,3 +381,40 @@ nvim ./config/alacritty/alacritty.yml
 ```
 sudo apt install ripgrep
 ```
+
+
+## llvm & clang
+Building Clang instruction is [here](https://clang.llvm.org/get_started.html)
+```
+sudo apt install cmake
+cmake --version
+git clone https://github.com/llvm/llvm-project.git
+cd llvm-project
+mkdir build && cd build
+cmake -DLLVM_ENABLE_PROJECTS=clang -DCMAKE_BUILD_TYPE=Release -G "Unix Makefiles" ../llvm
+make
+make clang
+```
+
+Try it out (assuming you add llvm/build/bin to your path):
+
+```
+clang --help
+```
+check for correctness
+```
+clang file.c -fsyntax-only
+```
+print out unoptimized llvm code & optimized
+```
+clang file.c -S -emit-llvm -o -
+clang file.c -S -emit-llvm -o - -O3
+```
+output native machine code
+```
+clang file.c -S -O3 -o -
+```
+Run the testsuite:
+```
+make check-clang
+```
