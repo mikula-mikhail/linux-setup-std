@@ -56,6 +56,10 @@ vim ~/.zshrc
 source ~/.zshrc
 ```
 
+Fish shell-like syntax highlighting for Zsh
+[githut syntax highlighting](https://github.com/zsh-users/zsh-syntax-highlighting)
+[Install.md](https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/INSTALL.md)
+
 install zsh as default commandline
 
 ```
